@@ -1,6 +1,5 @@
 version: "3.7"
 services:
-
   postgres_database:
     image: postgres:15.2-alpine
     restart: always
@@ -11,7 +10,7 @@ services:
     expose:
       - 5432
     volumes:
-      - postgresql:/var/lib/postgresql/data
+      - postgres_db:/var/lib/postgresql/data
 
   prefect_server:
     image: python_prefect_dbt_piperider
@@ -56,7 +55,7 @@ services:
       - .:${PREFECT_LOCAL_STORAGE_PATH}
     entrypoint: 
       [ 
-        "python3" 
+        "/opt/venv/bin/python" 
       ]
     environment:
       - PREFECT_API_URL=http://prefect_server:4200/api
@@ -64,7 +63,7 @@ services:
     
 volumes:
   prefect:
-  postgresql:
+  postgres_db:
 networks:
   default:
     name: prefect-network    
