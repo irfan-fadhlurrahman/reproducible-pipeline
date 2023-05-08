@@ -6,13 +6,16 @@ include .env
 create-docker-network:
 	docker network create ${DOCKER_NETWORK_NAME}
 
-docker-compose-up:
+docker-build:
+	source .env
 	docker build -f Dockerfile -t  python_prefect_dbt_piperider .
-	docker compose --env-file=.env up -d prefect_server
-	docker compose --env-file=.env up -d prefect_agent
+
+docker-compose-up:
+	docker compose --env-file=.env up -d server
+	docker compose --env-file=.env up -d agent
 
 docker-compose-down:
-	docker compose down
+	docker compose down --remove-orphans
 
 # General
 initial-setup:
@@ -23,3 +26,6 @@ install-terraform:
 
 create-common-files:
 	touch .env .gitignore Makefile README.md LICENSE.md
+
+echo-sth:
+	echo ${PROJECT_FOLDER}

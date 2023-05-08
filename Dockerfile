@@ -15,9 +15,15 @@ RUN apt-get -y update && \
 # Python Virtual Environment
 COPY requirements.txt .
 RUN python3 -m venv /opt/venv
-RUN /opt/venv/bin/pip install --upgrade pip
+
+ENV PATH "/opt/venv/bin:$PATH"
+
+RUN /opt/venv/bin/pip install -U pip
 RUN /opt/venv/bin/pip install -r requirements.txt
 
+RUN which python
+
+# For Prefect API
 EXPOSE 4200
 
 ENTRYPOINT [ "bash" ]
